@@ -1,4 +1,4 @@
-# Carbon 🐝🍯
+# Carbon 
 
 ## Development
 

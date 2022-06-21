@@ -18,8 +18,8 @@ function App() {
       {/* <Nav /> */}
       <Switch>
         <Route exact path="/" component={Dashboard} />
-        <Route path="/edit/:id" component={Editor} />
-        <Route path="/edit_grapesjs/:id" component={GrapesJsEditor} />
+        {/* <Route path="//:id" component={Editor} /> */}
+        <Route path="/edit/:id" component={GrapesJsEditor} />
         <Route path="/photo" component={PhotoInitials} />
         <Route path="/staff" component={StaffList} />
         <Route path="/linebreak" component={Linebreak} />

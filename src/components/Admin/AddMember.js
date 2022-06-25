@@ -9,7 +9,7 @@ const modalItem = {
   twitter: "",
   position: "",
   multimedia: {
-    type: "radio"
+    type: "radio",
   },
   initials: "",
 };
@@ -18,7 +18,7 @@ export class AddMember extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showModal: false
+      showModal: false,
     };
     this.closeModal = this.closeModal.bind(this);
     this.prepareModal = this.prepareModal.bind(this);
@@ -30,31 +30,31 @@ export class AddMember extends React.Component {
 
   prepareModal() {
     this.setState({
-      showModal: true
+      showModal: true,
     });
   }
 
   render() {
     return (
       <>
-        {
-          this.state.showModal
-            ? <BuzzModal
-              submitFunc={postMember}
-              closeModal={this.closeModal}
-              isOpen={this.state.showModal}
-              item={modalItem}
-            />
-            : null
-        }
-        <div style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          padding: "0.5em 2em"
-        }}>
+        {this.state.showModal ? (
+          <BuzzModal
+            submitFunc={postMember}
+            closeModal={this.closeModal}
+            isOpen={this.state.showModal}
+            item={modalItem}
+          />
+        ) : null}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            padding: "0.5em 2em",
+          }}
+        >
           <button onClick={this.prepareModal}>+ Add Member</button>
         </div>
       </>
-    )
+    );
   }
 }

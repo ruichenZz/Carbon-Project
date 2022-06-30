@@ -1,271 +1,74 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import { withRouter } from "react-router-dom";
-import { Formik } from "formik";
-import Modal from "react-modal";
-import axios from "axios";
-import { checkPackageNameAvailable } from "../../services/api";
-import { mediaQueries } from "../../shared/config";
+import Create from './Create'
+import Dash from "./Dashboard";
 
-import Project from "./Project";
+//import material ui stuffes
+import AppBar from '@mui/material/AppBar';
+import {Box,Grid, Paper} from '@mui/material';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
-// Component declaration
 
 const Dashboard = (props) => {
-  const [projects, setProjects] = useState([]);
-  const [createProjectModalOpen, setCreateProjectModalOpen] = useState(false);
-  const [numProject, setNumProject] = useState(4);
+  const [value, setValue] = React.useState(0);
 
-  useEffect(() => {
-    function getProject() {
-      axios
-        .get("http://localhost:3000/api/projects/")
-        .then((res) => setProjects(res.data))
-        .catch((err) => console.log(err));
-    }
-    getProject();
-  }, []);
-
-  const handleUpdateProject = () => {
-    setProjects(projects.map());
-  };
-
-  const modalCustomStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-    },
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
   };
 
   return (
-    <div>
-      <Header>
-        {projects.length !== 0 && (
-          <>
-            <Button onClick={() => setCreateProjectModalOpen(true)}>
-              Create Project
-            </Button>
-
-            <Modal
-              isOpen={createProjectModalOpen}
-              onRequestClose={() => setCreateProjectModalOpen(false)}
-              ariaHideApp={false}
-              style={modalCustomStyles}
-            >
-              <button onClick={() => setCreateProjectModalOpen(false)}>
-                Cancel
-              </button>
-              <Formik
-                initialValues={{ projectName: "" }}
-                validate={(values) => {
-                  const errors = {};
-                  if (!values.projectName)
-                    errors.projectName = "Project Name required";
-                  return errors;
-                }}
-                onSubmit={(values, { setSubmitting }) => {
-                  checkPackageNameAvailable(values.projectName).then(
-                    (isAvailable) => {
-                      if (isAvailable) {
-                        axios
-                          .post("http://localhost:3000/api/projects/create", {
-                            name: values.projectName,
-                          })
-                          .then((res) => {
-                            alert(
-                              `Project ${values.projectName} successfully created!`
-                            );
-                            setProjects((prevState) => [
-                              ...prevState,
-                              res.data.project,
-                            ]);
-                            setCreateProjectModalOpen(false);
-                            setSubmitting(false);
-                          })
-                          .catch((err) => {
-                            alert(err);
-                          });
-                      } else {
-                        alert(
-                          `This project name already exists! Please use another name.`
-                        );
-                      }
-                    }
-                  );
-                }}
-              >
-                {(formik) => (
-                  <form onSubmit={formik.handleSubmit}>
-                    <input
-                      name="projectName"
-                      type="text"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.projectName}
-                    />
-                    {formik.touched.projectName && formik.errors.projectName ? (
-                      <div>{formik.errors.projectName}</div>
-                    ) : null}
-                    <button type="submit">Submit</button>
-                  </form>
-                )}
-              </Formik>
-            </Modal>
-          </>
-        )}
-      </Header>
-
-      {projects.length === 0 ? (
-        <NoProjectContainer>
-          <h1>You haven't created any projects</h1>
-          <Button onClick={() => setCreateProjectModalOpen(true)}>
-            Create Project
-          </Button>
-          <Modal
-            isOpen={createProjectModalOpen}
-            onRequestClose={() => setCreateProjectModalOpen(false)}
-            ariaHideApp={false}
-            style={modalCustomStyles}
+   <>
+     <Box sx={{ flexGrow: 1}}>
+      <AppBar position="static" sx={{ flexGrow: 1, minHeight: 80}}>        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
           >
-            <button onClick={() => setCreateProjectModalOpen(false)}>
-              Cancel
-            </button>
-            <Formik
-              initialValues={{ projectName: "" }}
-              validate={(values) => {
-                const errors = {};
-                if (!values.projectName)
-                  errors.projectName = "Project Name required";
-                return errors;
-              }}
-              onSubmit={(values, { setSubmitting }) => {
-                axios
-                  .post("http://localhost:3000/api/projects/create", {
-                    name: values.projectName,
-                  })
-                  .then((res) => {
-                    alert(
-                      `Project ${values.projectName} successfully created!`
-                    );
-                    setProjects((prevState) => [
-                      ...prevState,
-                      res.data.project,
-                    ]);
-                    setCreateProjectModalOpen(false);
-                    setSubmitting(false);
-                  })
-                  .catch((err) => {
-                    alert(err);
-                  });
-              }}
-            >
-              {(formik) => (
-                <form onSubmit={formik.handleSubmit}>
-                  <input
-                    name="projectName"
-                    type="text"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.projectName}
-                  />
-                  {formik.touched.projectName && formik.errors.projectName ? (
-                    <div>{formik.errors.projectName}</div>
-                  ) : null}
-                  <button type="submit">Submit</button>
-                </form>
-              )}
-            </Formik>
-          </Modal>
-        </NoProjectContainer>
-      ) : (
-        <Container>
-          {projects.map((project, index) => {
-            return (
-              <Project
-                key={index}
-                data={project}
-                handleUpdateProject={handleUpdateProject}
-              />
-            );
-          })}
-        </Container>
-      )}
-    </div>
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h5" component="div" sx={{ flexGrow: 2 }}>
+            Carbon Project
+          </Typography>
+
+          <Create />
+          <Button color="inherit"></Button>
+          <Button color="inherit">Login</Button>
+        </Toolbar>
+      </AppBar>
+    </Box>
+
+    <Grid container spacing={2} >
+    <Grid item xs = {12} >
+      <Typography variant = 'h6'
+      sx = {{
+        color: "white"
+      }}
+      > ad</Typography>
+    </Grid>
+
+      <Grid item xs = {2}>
+        <Tabs value={value} onChange={handleChange} orientation ="vertical">
+          <Tab icon={<DashboardIcon />} label="Dashboard" />
+          <Tab icon={<AdminPanelSettingsIcon />} label="Administrator" />
+        </Tabs>
+      </Grid>
+      <Grid item xs = {9}>
+      <Dash />
+      </Grid>
+    </Grid>
+   </>
   );
 };
-
-// styled components declaration
-
-const Header = styled.div`
-  background-color: #333333;
-  height: 20vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Button = styled.button`
-  background-color: white;
-  color: black;
-  padding: 2em;
-  cursor: pointer;
-`;
-
-const Container = styled.div`
-  background: #444444;
-  display: grid;
-  grid-template-columns: 50% 50%;
-  padding: 2em 0;
-  row-gap: 2em;
-  min-height: 80vh;
-  ${mediaQueries.mobile} {
-    grid-template-columns: 100%;
-  }
-`;
-
-const NoProjectContainer = styled.div`
-  background: #444444;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: calc(100vh - 20vh);
-`;
-
-const ProjectContainer = styled.div`
-  width: 80%;
-  margin: auto;
-  ${mediaQueries.tablet} {
-    width: 90%;
-  }
-  ${mediaQueries.mobile} {
-    width: 80%;
-  }
-`;
-
-const TestPreview = styled.div`
-  height: 400px;
-  background: #bbbbbb;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 5px 5px 0 0;
-  color: gray;
-`;
-
-const Description = styled.div`
-  border-radius: 0 0 5px 5px;
-  color: white;
-  padding: 0.5em 1em 1.5em 1em;
-  background: #333333;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
 
 export default withRouter(Dashboard);

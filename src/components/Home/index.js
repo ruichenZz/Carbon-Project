@@ -1,6 +1,5 @@
-import { hot } from "react-hot-loader/root";
-import React from "react";
-import { Switch, Route } from "react-router";
+import React, { useState, useEffect } from "react";
+import { withRouter } from "react-router-dom";
 
 //import material ui stuffes
 import AppBar from "@mui/material/AppBar";
@@ -14,20 +13,11 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
-import Dashboard from "./components/Dashboard";
-import GrapesJsEditor from "./components/GraphJsEditor";
-import AdminPage from "./components/Admin";
-
-const App = () => {
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
+const Home = () => {
   return (
-    <div className="App">
+    <>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static" sx={{ flexGrow: 1, minHeight: 80 }}>
           {" "}
@@ -71,15 +61,11 @@ const App = () => {
           </Tabs>
         </Grid>
         <Grid item xs={9}>
-          <Switch>
-            <Route exact path="/" component={Dashboard} />
-            <Route path="/edit/:id" component={GrapesJsEditor} />
-            <Route path="/admin" component={AdminPage} />
-          </Switch>
+          <Dash />
         </Grid>
       </Grid>
-    </div>
+    </>
   );
 };
 
-export default hot(App);
+export default withRouter(Home);

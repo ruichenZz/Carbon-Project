@@ -1,0 +1,116 @@
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { withRouter } from "react-router-dom";
+import { Formik } from "formik";
+import Modal from "react-modal";
+import axios from "axios";
+
+
+
+
+// Component declaration
+
+const Create= (props) => {
+  const [projects, setProjects] = useState([]);
+  const [createProjectModalOpen, setCreateProjectModalOpen] = useState(false);
+
+  useEffect(() => {
+    function getProject() {
+      axios
+        .get("http://localhost:3000/api/projects/")
+        .then((res) => setProjects(res.data))
+        .catch((err) => console.log(err));
+    }
+    getProject();
+  }, []);
+
+  const modalCustomStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+    },
+  };
+
+  return (
+    <div>
+      <Button onClick={() => setCreateProjectModalOpen(true)}>
+        Create Project
+      </Button>
+
+      <Modal
+            isOpen={createProjectModalOpen}
+            onRequestClose={() => setCreateProjectModalOpen(false)}
+            ariaHideApp={false}
+            style={modalCustomStyles}
+          >
+            <button onClick={() => setCreateProjectModalOpen(false)}>
+              Cancel
+            </button>
+            <Formik
+              initialValues={{ projectName: "" }}
+              validate={(values) => {
+                const errors = {};
+                if (!values.projectName)
+                  errors.projectName = "Project Name required";
+                return errors;
+              }}
+              onSubmit={(values, { setSubmitting }) => {
+                axios
+                  .post("http://localhost:3000/api/projects/create", {
+                    name: values.projectName,
+                  })
+                  .then((res) => {
+                    alert(
+                      `Project ${values.projectName} successfully created!`
+                    );
+                    setProjects((prevState) => [
+                      ...prevState,
+                      res.data.project,
+                    ]);
+                    setCreateProjectModalOpen(false);
+                    setSubmitting(false);
+                  })
+                  .catch((err) => {
+                    alert(err);
+                  });
+              }}
+            >
+              {(formik) => (
+                <form onSubmit={formik.handleSubmit}>
+                  <input
+                    name="projectName"
+                    type="text"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.projectName}
+                  />
+                  {formik.touched.projectName && formik.errors.projectName ? (
+                    <div>{formik.errors.projectName}</div>
+                  ) : null}
+                  <button type="submit">Submit</button>
+                </form>
+              )}
+            </Formik>
+          </Modal>
+
+
+      
+    </div>
+  );
+};
+
+// styled components declaration
+
+
+const Button = styled.button`
+  background-color: white;
+  color: black;
+  padding: 2em;
+  cursor: pointer;
+`;
+
+export default Create;

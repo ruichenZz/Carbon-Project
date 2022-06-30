@@ -6,6 +6,16 @@ import {mediaQueries} from '../../shared/config'
 
 import axios from "axios"
 
+//material UI components
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+
+
 /**
  * Component Declaration
  */
@@ -37,10 +47,19 @@ export default function Project(props) {
   }
 
   return (
-      <ProjectContainer>
-          <button onClick={() => setDeleteProjectModalOpen(true)}>Delete</button>
-          <button onClick={() => history.push(`/edit/${data["_id"]}`)}>Edit</button>
-          <Modal
+      <>
+    {/* <TableContainer component={Paper}>
+      <Table  aria-label="simple table"> */}
+
+          <TableRow>
+            <TableCell>{data.name}</TableCell>
+            <TableCell >{data.status}</TableCell>
+            <TableCell><button onClick={() => history.push(`/edit/${data["_id"]}`)}>Edit</button></TableCell>
+            <TableCell ><button onClick={() => setDeleteProjectModalOpen(true)}>Delete</button></TableCell>
+          </TableRow>
+      {/* </Table>
+    </TableContainer> */}
+    <Modal
               isOpen={deleteProjectModalOpen}
               onRequestClose={() => setDeleteProjectModalOpen(false)}
               ariaHideApp = {false}
@@ -50,14 +69,8 @@ export default function Project(props) {
               <button onClick={() => setDeleteProjectModalOpen(false)}>Cancel</button>
               <button onClick={() => handleDeleteProject(data["_id"])}>Delete</button>
           </Modal>
-          <TestPreview>
-              <h1>Preview</h1>
-          </TestPreview>
-          <Description>
-              <h3>{data.name}</h3>
-              <h3>Status: {data.status}</h3>
-          </Description>
-      </ProjectContainer>
+    </>
+
   )
 }
 

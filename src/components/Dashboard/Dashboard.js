@@ -9,6 +9,15 @@ import { mediaQueries } from "../../shared/config";
 
 import Project from "./Project";
 
+//material UI components
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+
 
 
 
@@ -179,7 +188,19 @@ const Dash = (props) => {
         </NoProjectContainer>
       ) : (
         <Container>
-          {projects.map((project, index) => {
+
+        <TableContainer component={Paper}>
+      <Table >
+        <TableHead>
+          <TableRow>
+            <TableCell>ProjectName</TableCell>
+            <TableCell >Status</TableCell>
+            <TableCell>Edit</TableCell>
+            <TableCell >Delete</TableCell>
+          </TableRow>
+          </TableHead>
+          <TableBody>
+        {projects.map((project, index) => {
             return (
               <Project
                 key={index}
@@ -188,6 +209,10 @@ const Dash = (props) => {
               />
             );
           })}
+</TableBody>
+      </Table>
+    </TableContainer>
+          
         </Container>
       )}
       
@@ -214,14 +239,14 @@ const Button = styled.button`
 `;
 
 const Container = styled.div`
-  background: #444444;
+  ${'' /* background: #444444;
   display: grid;
   grid-template-columns: 50% 50%;
   padding: 2em 0;
   row-gap: 2em;
   min-height: 80vh;
   ${mediaQueries.mobile} {
-    grid-template-columns: 100%;
+    grid-template-columns: 100%; */}
   }
 `;
 

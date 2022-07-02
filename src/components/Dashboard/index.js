@@ -6,7 +6,7 @@ import Dash from "./Dashboard";
 const Dashboard = (props) => {
   return (
     <>
-      <Create />
+
       <Dash />
     </>
   );

@@ -14,6 +14,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
 
 /**
  * Component Declaration
@@ -55,14 +56,17 @@ export default function Project(props) {
         <TableCell>{data.name}</TableCell>
         <TableCell>{data.status}</TableCell>
         <TableCell>
-          <button onClick={() => history.push(`/edit/${data['_id']}`)}>
+          
+          <Button size="small" variant="outlined" onClick={() => history.push(`/edit/${data['_id']}`)}>
             Edit
-          </button>
+          </Button>
+
+
         </TableCell>
         <TableCell>
-          <button onClick={() => setDeleteProjectModalOpen(true)}>
+          <Button size="small" color="error" variant="outlined" onClick={() => setDeleteProjectModalOpen(true)}>
             Delete
-          </button>
+          </Button>
         </TableCell>
       </TableRow>
       {/* </Table>

@@ -38,7 +38,7 @@ const Create = (props) => {
 
   return (
     <div>
-      <Tabs orientation="vertical">
+      {/* <Tabs orientation="vertical"> */}
         <Tab
           icon={<AddToPhotosIcon />}
           label="Create Project"
@@ -46,7 +46,7 @@ const Create = (props) => {
         >
           Create Project
         </Tab>
-      </Tabs>
+      {/* </Tabs> */}
 
       <Modal
         isOpen={createProjectModalOpen}

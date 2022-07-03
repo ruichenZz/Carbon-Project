@@ -19,6 +19,8 @@ import Dashboard from "./components/Dashboard";
 import GrapesJsEditor from "./components/GraphJsEditor";
 import AdminPage from "./components/Admin";
 
+import Create from './components/Dashboard/Create';
+
 const App = () => {
   const [value, setValue] = React.useState(0);
 
@@ -67,8 +69,9 @@ const App = () => {
         <Grid item xs={2}>
           <Tabs value={value} onChange={handleChange} orientation="vertical">
             <Tab icon={<DashboardIcon />} label="Dashboard" />
-            <Tab icon={<AdminPanelSettingsIcon />} label="Administrator" />
+            <Tab icon={<AdminPanelSettingsIcon />} label="Administrator" />  
           </Tabs>
+          {/* <Create /> */}
         </Grid>
         <Grid item xs={9}>
           <Switch>

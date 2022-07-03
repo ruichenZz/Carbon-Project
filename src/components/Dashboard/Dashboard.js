@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { withRouter } from "react-router-dom";
-import { Formik } from "formik";
-import Modal from "react-modal";
-import axios from "axios";
-import { checkPackageNameAvailable } from "../../services/api";
-import { mediaQueries } from "../../shared/config";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { withRouter } from 'react-router-dom';
+import { Formik } from 'formik';
+import Modal from 'react-modal';
+import axios from 'axios';
+import { checkPackageNameAvailable } from '../../services/api';
+import { mediaQueries } from '../../shared/config';
 
-import Project from "./Project";
+import Project from './Project';
 
 //material UI components
 import Table from '@mui/material/Table';
@@ -17,8 +17,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-
-
+import Button from '@mui/material/Button';
 
 
 // Component declaration
@@ -30,7 +29,7 @@ const Dash = (props) => {
   useEffect(() => {
     function getProject() {
       axios
-        .get("http://localhost:3000/api/projects/")
+        .get('http://localhost:3000/api/projects/')
         .then((res) => setProjects(res.data))
         .catch((err) => console.log(err));
     }
@@ -43,12 +42,12 @@ const Dash = (props) => {
 
   const modalCustomStyles = {
     content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
     },
   };
 
@@ -57,7 +56,6 @@ const Dash = (props) => {
       <Header>
         {projects.length !== 0 && (
           <>
-
             <Modal
               isOpen={createProjectModalOpen}
               onRequestClose={() => setCreateProjectModalOpen(false)}
@@ -68,11 +66,11 @@ const Dash = (props) => {
                 Cancel
               </button>
               <Formik
-                initialValues={{ projectName: "" }}
+                initialValues={{ projectName: '' }}
                 validate={(values) => {
                   const errors = {};
                   if (!values.projectName)
-                    errors.projectName = "Project Name required";
+                    errors.projectName = 'Project Name required';
                   return errors;
                 }}
                 onSubmit={(values, { setSubmitting }) => {
@@ -80,7 +78,7 @@ const Dash = (props) => {
                     (isAvailable) => {
                       if (isAvailable) {
                         axios
-                          .post("http://localhost:3000/api/projects/create", {
+                          .post('http://localhost:3000/api/projects/create', {
                             name: values.projectName,
                           })
                           .then((res) => {
@@ -140,16 +138,16 @@ const Dash = (props) => {
               Cancel
             </button>
             <Formik
-              initialValues={{ projectName: "" }}
+              initialValues={{ projectName: '' }}
               validate={(values) => {
                 const errors = {};
                 if (!values.projectName)
-                  errors.projectName = "Project Name required";
+                  errors.projectName = 'Project Name required';
                 return errors;
               }}
               onSubmit={(values, { setSubmitting }) => {
                 axios
-                  .post("http://localhost:3000/api/projects/create", {
+                  .post('http://localhost:3000/api/projects/create', {
                     name: values.projectName,
                   })
                   .then((res) => {
@@ -188,35 +186,33 @@ const Dash = (props) => {
         </NoProjectContainer>
       ) : (
         <Container>
-
-        <TableContainer component={Paper}>
-      <Table >
-        <TableHead>
-          <TableRow>
-            <TableCell>ProjectName</TableCell>
-            <TableCell >Status</TableCell>
-            <TableCell>Edit</TableCell>
-            <TableCell >Delete</TableCell>
-          </TableRow>
-          </TableHead>
-          <TableBody>
-        {projects.map((project, index) => {
-            return (
-              <Project
-                key={index}
-                data={project}
-                handleUpdateProject={handleUpdateProject}
-              />
-            );
-          })}
-</TableBody>
-      </Table>
-    </TableContainer>
-          
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>ProjectName</TableCell>
+                  <TableCell>Status</TableCell>
+                  <TableCell>
+                    Edit
+                  </TableCell>
+                  <TableCell>Delete</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {projects.map((project, index) => {
+                  return (
+                    <Project
+                      key={index}
+                      data={project}
+                      handleUpdateProject={handleUpdateProject}
+                    />
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </Container>
       )}
-      
-      
     </div>
   );
 };
@@ -224,14 +220,12 @@ const Dash = (props) => {
 // styled components declaration
 
 const Header = styled.div`
-  background-color: #333333;
-  height: 20vh;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
-const Button = styled.button`
+const Buttons = styled.button`
   background-color: white;
   color: black;
   padding: 2em;
@@ -239,14 +233,16 @@ const Button = styled.button`
 `;
 
 const Container = styled.div`
-  ${'' /* background: #444444;
+  ${
+    '' /* background: #444444;
   display: grid;
   grid-template-columns: 50% 50%;
   padding: 2em 0;
   row-gap: 2em;
   min-height: 80vh;
   ${mediaQueries.mobile} {
-    grid-template-columns: 100%; */}
+    grid-template-columns: 100%; */
+  }
   }
 `;
 

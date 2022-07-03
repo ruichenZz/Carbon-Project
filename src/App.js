@@ -1,6 +1,7 @@
 import { hot } from "react-hot-loader/root";
 import React from "react";
-import { Switch, Route } from "react-router";
+import { Switch, Route, Link } from "react-router-dom";
+import axios from "axios";
 
 //import material ui stuffes
 import AppBar from "@mui/material/AppBar";
@@ -21,12 +22,21 @@ import AdminPage from "./components/Admin";
 
 import Create from './components/Dashboard/Create';
 
+
 const App = () => {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  let tabs;
+  let isAdmin;
+
+  axios.get(`http://localhost:3000/api/admin/is_admin`).then((res) => {
+    console.log(res);
+    isAdmin = res.data.isAdmin;
+    console.log("is admin: ", isAdmin);
+  });
 
   return (
     <div className="App">
@@ -65,14 +75,16 @@ const App = () => {
             ad
           </Typography>
         </Grid>
+        <Route path="/">
+          <Grid item xs={2}>
+            <Tabs value={value} onChange={handleChange} orientation="vertical">
+              <Tab icon={<DashboardIcon />} label="Dashboard" component={Link} to="/"/>
+              {isAdmin ? <Tab icon={<AdminPanelSettingsIcon />} label="Administrator" component={Link} to="/admin"/> : null}
+            </Tabs>
+            {/* <Create /> */}
+          </Grid>
+        </Route>
 
-        <Grid item xs={2}>
-          <Tabs value={value} onChange={handleChange} orientation="vertical">
-            <Tab icon={<DashboardIcon />} label="Dashboard" />
-            <Tab icon={<AdminPanelSettingsIcon />} label="Administrator" />  
-          </Tabs>
-          {/* <Create /> */}
-        </Grid>
         <Grid item xs={9}>
           <Switch>
             <Route exact path="/" component={Dashboard} />

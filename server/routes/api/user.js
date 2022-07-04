@@ -4,9 +4,6 @@ const { User } = require("../../db");
 
 const router = new Router();
 
-
-
-
 const handleError = (res) => {
   res.json({ "message": "bad" });
 }

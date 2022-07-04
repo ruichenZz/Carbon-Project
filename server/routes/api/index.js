@@ -5,8 +5,8 @@ const GrapesStorageRouter = require("./grapesStorageRouter");
 
 const router = new Router();
 
-router.use("/adminRouter", AdminRouter);
-router.use("/grapesStorageRouter", GrapesStorageRouter);
+router.use("/admin", AdminRouter);
+router.use("/grapesStorage", GrapesStorageRouter);
 router.use("/projects", ProjectRouter);
 
 router.get("/", async (req, res) => {

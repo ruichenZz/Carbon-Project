@@ -21,6 +21,8 @@ import Dashboard from "./components/Dashboard";
 import GrapesJsEditor from "./components/GraphJsEditor";
 import AdminPage from "./components/Admin";
 
+import config from "./config";
+
 import Create from "./components/Dashboard/Create";
 
 const App = () => {
@@ -32,7 +34,7 @@ const App = () => {
     setValue(newValue);
   };
 
-  axios.get(`http://localhost:3000/api/admin/is_admin`).then((res) => {
+  axios.get(config.SERVER_URL + `/api/admin/is_admin`).then((res) => {
     if (res.data.isAdmin) {
       setIsAdmin(1);
     }

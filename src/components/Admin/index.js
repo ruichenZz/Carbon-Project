@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 const getUsers = () =>
-  axios.get(`http://localhost:3000/api/projects/users`).then((res) => res.data);
+  axios.get(`http://localhost:3000/api/admin/users`).then((res) => res.data);
 const promoteRequest = (UID) =>
   axios
     .post(`http://localhost:3000/api/projects/promote`, UID)
@@ -48,7 +48,6 @@ class AdminPage extends React.PureComponent {
 
   transformData(data) {
     return data.allUsers.map((x) => ({
-      email: x.email,
       userId: x._id,
     }));
   }

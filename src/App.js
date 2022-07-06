@@ -25,16 +25,15 @@ import Create from './components/Dashboard/Create';
 
 const App = () => {
   const [value, setValue] = React.useState(0);
+  const [isAdmin, setIsAdmin] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  let tabs;
-  let isAdmin;
 
   axios.get(`http://localhost:3000/api/admin/is_admin`).then((res) => {
     console.log(res);
-    isAdmin = res.data.isAdmin;
+    setIsAdmin(1);
     console.log("is admin: ", isAdmin);
   });
 

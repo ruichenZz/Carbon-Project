@@ -2,6 +2,7 @@ import { hot } from "react-hot-loader/root";
 import React from "react";
 import { Switch, Route, Link } from "react-router-dom";
 import axios from "axios";
+import Collapse from "@mui/material/Collapse";
 
 //import material ui stuffes
 import AppBar from "@mui/material/AppBar";
@@ -20,21 +21,23 @@ import Dashboard from "./components/Dashboard";
 import GrapesJsEditor from "./components/GraphJsEditor";
 import AdminPage from "./components/Admin";
 
-import Create from './components/Dashboard/Create';
+import config from "./config";
 
+import Create from "./components/Dashboard/Create";
 
 const App = () => {
   const [value, setValue] = React.useState(0);
+  const [collapseNavbar, setcollapseNavbar] = React.useState(false);
+  const [isAdmin, setIsAdmin] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  let tabs;
-  let isAdmin;
 
-  axios.get(`http://localhost:3000/api/admin/is_admin`).then((res) => {
-    console.log(res);
-    isAdmin = res.data.isAdmin;
+  axios.get(config.SERVER_URL + `/api/admin/is_admin`).then((res) => {
+    if (res.data.isAdmin) {
+      setIsAdmin(1);
+    }
     console.log("is admin: ", isAdmin);
   });
 
@@ -50,10 +53,20 @@ const App = () => {
               color="inherit"
               aria-label="menu"
               sx={{ mr: 2 }}
+              onClick={() => {
+                setcollapseNavbar(!collapseNavbar);
+                console.log("icon clicked!");
+              }}
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h5" component="div" sx={{ flexGrow: 2 }}>
+
+            <Typography
+              //   onClick={handleClickOpen}
+              variant="h5"
+              component="div"
+              sx={{ flexGrow: 2 }}
+            >
               Carbon Project
             </Typography>
             {/* <Create />
@@ -75,15 +88,32 @@ const App = () => {
             ad
           </Typography>
         </Grid>
-        <Route path="/">
-          <Grid item xs={2}>
-            <Tabs value={value} onChange={handleChange} orientation="vertical">
-              <Tab icon={<DashboardIcon />} label="Dashboard" component={Link} to="/"/>
-              {isAdmin ? <Tab icon={<AdminPanelSettingsIcon />} label="Administrator" component={Link} to="/admin"/> : null}
-            </Tabs>
-            {/* <Create /> */}
-          </Grid>
-        </Route>
+        {collapseNavbar ? null : (
+          <Route path="/">
+            <Grid item xs={2}>
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                orientation="vertical"
+              >
+                <Tab
+                  icon={<DashboardIcon />}
+                  label="Dashboard"
+                  component={Link}
+                  to="/"
+                />
+                {isAdmin ? (
+                  <Tab
+                    icon={<AdminPanelSettingsIcon />}
+                    label="Administrator"
+                    component={Link}
+                    to="/admin"
+                  />
+                ) : null}
+              </Tabs>
+            </Grid>
+          </Route>
+        )}
 
         <Grid item xs={9}>
           <Switch>

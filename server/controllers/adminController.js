@@ -3,6 +3,7 @@ const UserModel = require("../db/models/User");
 const ProjectModel = require("../db/models/Project");
 
 const { User } = require("../db");
+const { Section } = require("../db");
 
 const isAuthenticated = async (req, res, next) => {
   // req.isAuthenticated() is a method passed from the passport
@@ -104,7 +105,7 @@ const demote = async (req, res, next) => {
     user.admin = false;
     await user.save();
 
-    res.status(200).json({ messgae: "Demoted to a regular user" });
+    res.status(200).json({ message: "Demoted to a regular user" });
   } catch (error) {
     res.status(500).json({ error, message: "Failed to demote" });
   }
@@ -121,7 +122,25 @@ const approve = async (req, res, next) => {
 
     res.status(200).json({ message: "Project has been approved" });
   } catch (error) {
-    res.status(500).json({ error, message: "Fail" });
+    res.status(500).json({ error, message: "Failed to approve" });
+  }
+};
+
+const getAllSections = async (req, res, next) => {
+  try {
+    let allSections;
+
+    if (req.user.admin || req.user.superAdmin) {
+      allSections = await Section.find();
+    } else {
+      res.status(401).json({ message: "Unauthorized: you are not an admin" });
+    }
+
+    res.status(200).json({
+      allSections,
+    });
+  } catch (error) {
+    res.status(500).json({ error, message: "Failed to get all sections" });
   }
 };
 
@@ -134,4 +153,5 @@ module.exports = {
   promote,
   demote,
   approve,
+  getAllSections,
 };

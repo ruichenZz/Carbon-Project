@@ -7,6 +7,7 @@ const {
   promote, 
   demote, 
   approve, 
+  getAllSections
 } = require("../../controllers/adminController");
 
 const router = new Router();
@@ -18,5 +19,7 @@ router.get("/users", getAllUsers);
 router.post("/promote", isAdmin, promote);
 router.post("/demote", isAdmin, demote);
 router.post("/approve", isAdmin, approve);
+
+router.get("/sections", getAllSections);
 
 module.exports = router;

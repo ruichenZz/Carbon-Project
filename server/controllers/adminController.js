@@ -126,6 +126,40 @@ const approve = async (req, res, next) => {
   }
 };
 
+const createSection = async (req, res, next) => {
+  try {
+    if (req.user.admin || req.user.superAdmin) {
+      const { sectionName } = req.body;
+      const newSection = new Section({ sectionName });
+      await newSection.save();
+
+      res.status(200).json({ message: "New section created", section: newSection });
+    } else {
+      res.status(401).json({ message: "Unauthorized: you are not an admin" });
+    }
+  } catch (error) {
+    res.status(500).json({ error, message: "Failed to create section" });
+  }
+};
+
+const deleteSection = async (req, res, next) => {
+  try {
+    if (req.user.admin || req.user.superAdmin) {
+      Section.findByIdAndDelete(req.params.sectionid, (err) => {
+        if (err) {
+          console.log(err);
+          res.status(400).json("Failed to delete section");
+        }
+        res.status(200).json("Successfully deleted section");
+      });
+    } else {
+      res.status(401).json({ message: "Unauthorized: you are not an admin" });
+    }
+  } catch (error) {
+    res.status(500).json({ error, message: "Failed to delete section" });
+  }
+};
+
 const getAllSections = async (req, res, next) => {
   try {
     let allSections;
@@ -153,5 +187,7 @@ module.exports = {
   promote,
   demote,
   approve,
+  createSection,
+  deleteSection,
   getAllSections,
 };

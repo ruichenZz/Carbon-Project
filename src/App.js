@@ -20,9 +20,6 @@ import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import Dashboard from "./components/Dashboard";
 import GrapesJsEditor from "./components/GraphJsEditor";
 import AdminPage from "./components/Admin";
-import GroupWorkIcon from "@mui/icons-material/GroupWork";
-import PeopleIcon from "@mui/icons-material/People";
-import WebIcon from "@mui/icons-material/Web";
 
 import config from "./config";
 
@@ -68,7 +65,7 @@ const App = () => {
               //   onClick={handleClickOpen}
               variant="h5"
               component="div"
-              component={Link}
+              // component={Link}
               to="/"
               noWrap
               sx={{ 
@@ -120,36 +117,12 @@ const App = () => {
                   to="/"
                 />
 
-{isAdmin ? (
+              {isAdmin ? (
                   <Tab
                     icon={<AdminPanelSettingsIcon />}
                     label="Administrator"
-                    disabled
-                    //to="/admin"
-                  />
-                ) : null}
-                {isAdmin ? (
-                  <Tab
-                    icon={<WebIcon />}
-                    label="Manage Projects"
                     component={Link}
-                    // to="/admin"
-                  />
-                ) : null}
-                {isAdmin ? (
-                  <Tab
-                    icon={<PeopleIcon />}
-                    label="Manage Users"
-                    component={Link}
-                    //to="/admin"
-                  />
-                ) : null}
-                {isAdmin ? (
-                  <Tab
-                    icon={<GroupWorkIcon />}
-                    label="Manage Sections"
-                    component={Link}
-                    // to="/admin"
+                    to="/admin"
                   />
                 ) : null}
               </Tabs>

@@ -1,6 +1,7 @@
 // import user model
 const UserModel = require("../db/models/User");
 const ProjectModel = require("../db/models/Project");
+const SectionModel = require("../db/models/Section");
 
 const { User } = require("../db");
 
@@ -18,7 +19,7 @@ const isAuthenticated = async (req, res, next) => {
     console.log("User is NOT authenticated");
     res.redirect("/login");
   } catch (error) {
-    res.status(500).json({ error, message: "Failed" });
+    res.status(500).json({ error, message: "Failed to check authentication" });
   }
 }
 
@@ -63,7 +64,7 @@ const isAdmin = async (req, res, next) => {
         .json({ message: "Unauthorized: You are not an admin  :P" });
     }
   } catch (error) {
-    res.status(500).json({ error, message: "Failed" });
+    res.status(500).json({ error, message: "Failed to check if admin" });
   }
 }
 
@@ -77,7 +78,7 @@ const isSuperAdmin = async (req, res, next) => {
         .json({ message: "Unauthorized: You are not the super admin  :P" });
     }
   } catch (error) {
-    res.status(500).json({ error, message: "Failed" });
+    res.status(500).json({ error, message: "Failed to check if super admin" });
   }
 }
 
@@ -117,13 +118,73 @@ const approve = async (req, res, next) => {
     const project = await ProjectModel.findById(id); //built in mongoose function
 
     project.isApproved = true;
+    project.status = "Approved";
     await project.save();
 
     res.status(200).json({ message: "Project has been approved" });
   } catch (error) {
-    res.status(500).json({ error, message: "Fail" });
+    res.status(500).json({ error, message: "Fail to approve" });
   }
 };
+
+const deny = async (req, res, next) => {
+  try {
+    const { id } = req.body;
+
+    const project = await ProjectModel.findById(id); 
+
+    project.isApproved = false;
+    project.status = "Denied";
+    await project.save();
+
+    res.status(200).json({ message: "Project has been denied" });
+  } catch (error) {
+    res.status(500).json({ error, message: "Fail to deny" });
+  }
+};
+
+// to be tested and wait for implementation of section shcema
+const assignSection = async (req, res, next) => {
+  try {
+    const { userId, sectionId } = req.body;
+    const user = await UserModel.findById(userId);
+    const section = await SectionModel.findById(sectionId);
+
+    user.sections.push(section._id);
+    section.owner = user._id;
+
+    await user.save();
+    await section.save();
+
+  } catch (error) {
+    res.status(500).json({error, message: "Fail to assign user to section"});
+  }
+}
+
+// to be tested and wait for implementation of section shcema
+const removeSection = async (req, res, next) => {
+  try {
+    const { userId, sectionId } = req.body;
+    const user = await UserModel.findById(userId);
+    const section = await SectionModel.findById(sectionId);
+
+    let updatedSections = user.sections.filter(
+      (currSectionId) => {
+        return String(currSectionId) !== sectionId;
+      }
+    );
+    user.sections = updatedSections;
+
+    section.owner = null;
+
+    await user.save();
+    await section.save();
+
+  } catch (error) {
+    res.status(500).json({error, message: "Fail to assign user to section"});
+  }
+}
+
 
 module.exports = {
   isAuthenticated,
@@ -134,4 +195,5 @@ module.exports = {
   promote,
   demote,
   approve,
+  deny,
 };

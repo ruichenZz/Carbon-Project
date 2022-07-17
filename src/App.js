@@ -20,6 +20,9 @@ import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import Dashboard from "./components/Dashboard";
 import GrapesJsEditor from "./components/GraphJsEditor";
 import AdminPage from "./components/Admin";
+import GroupWorkIcon from "@mui/icons-material/GroupWork";
+import PeopleIcon from "@mui/icons-material/People";
+import WebIcon from "@mui/icons-material/Web";
 
 import config from "./config";
 
@@ -65,7 +68,18 @@ const App = () => {
               //   onClick={handleClickOpen}
               variant="h5"
               component="div"
-              sx={{ flexGrow: 2 }}
+              component={Link}
+              to="/"
+              noWrap
+              sx={{ 
+                mr: 2,
+              display: { xs: 'none', md: 'flex' },
+              fontFamily: 'monospace',
+              fontWeight: 800,
+              color: 'inherit',
+              textDecoration: 'none',
+              
+               }}
             >
               Carbon Project
             </Typography>
@@ -91,6 +105,9 @@ const App = () => {
         {collapseNavbar ? null : (
           <Route path="/">
             <Grid item xs={2}>
+            <Grid container justifyContent="center">
+              <Create/>
+            </Grid>
               <Tabs
                 value={value}
                 onChange={handleChange}
@@ -102,12 +119,37 @@ const App = () => {
                   component={Link}
                   to="/"
                 />
-                {isAdmin ? (
+
+{isAdmin ? (
                   <Tab
                     icon={<AdminPanelSettingsIcon />}
                     label="Administrator"
+                    disabled
+                    //to="/admin"
+                  />
+                ) : null}
+                {isAdmin ? (
+                  <Tab
+                    icon={<WebIcon />}
+                    label="Manage Projects"
                     component={Link}
-                    to="/admin"
+                    // to="/admin"
+                  />
+                ) : null}
+                {isAdmin ? (
+                  <Tab
+                    icon={<PeopleIcon />}
+                    label="Manage Users"
+                    component={Link}
+                    //to="/admin"
+                  />
+                ) : null}
+                {isAdmin ? (
+                  <Tab
+                    icon={<GroupWorkIcon />}
+                    label="Manage Sections"
+                    component={Link}
+                    // to="/admin"
                   />
                 ) : null}
               </Tabs>

@@ -14,10 +14,11 @@ import PeopleIcon from "@mui/icons-material/People";
 import WebIcon from "@mui/icons-material/Web";
 import AdminProjects from "./adminProjects"
 import AdminUsers from "./adminUsers"
-import AdminSections from "./adminSections"
+
 
 import config from "../../config";
 import Dashboard from "../Dashboard";
+import AdminSection from "./adminSections";
 
 const AdminPage = () => {
   const [value, setValue] = React.useState(0);
@@ -70,7 +71,7 @@ const AdminPage = () => {
             {/* <Route exact path="/" component={AdminPage} /> */}
             <Route path="/admin/adminProjects" component={Dashboard} /> 
             <Route path="/admin/adminUsers" component={Dashboard} />
-            <Route path="/admin/adminSections" component={Dashboard} />
+            <Route path="/admin/adminSections" component={AdminSection} />
             {/* should change to corresponding component after implementation*/}
           </Switch>
         </Grid>

@@ -126,7 +126,7 @@ const approve = async (req, res, next) => {
   }
 };
 
-const createSection = async (req, res, next) => {
+const createSection = async (req, res) => {
   try {
     if (req.user.admin || req.user.superAdmin) {
       const { sectionName } = req.body;
@@ -142,7 +142,7 @@ const createSection = async (req, res, next) => {
   }
 };
 
-const deleteSection = async (req, res, next) => {
+const deleteSection = async (req, res) => {
   try {
     if (req.user.admin || req.user.superAdmin) {
       Section.findByIdAndDelete(req.params.sectionid, (err) => {
@@ -160,7 +160,7 @@ const deleteSection = async (req, res, next) => {
   }
 };
 
-const getAllSections = async (req, res, next) => {
+const getAllSections = async (req, res) => {
   try {
     let allSections;
 

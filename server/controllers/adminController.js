@@ -128,7 +128,7 @@ const approve = async (req, res, next) => {
   }
 };
 
-const createSection = async (req, res, next) => {
+const createSection = async (req, res) => {
   try {
     // re.user.admin will not work in Postman, try to figure it out
     // if (req.user.admin || req.user.superAdmin) {
@@ -150,7 +150,7 @@ const createSection = async (req, res, next) => {
   }
 };
 
-const deleteSection = async (req, res, next) => {
+const deleteSection = async (req, res) => {
   try {
     // if (req.user.admin || req.user.superAdmin) {
     //   SectionModel.findByIdAndDelete(req.params.sectionid, (err) => {
@@ -175,7 +175,7 @@ const deleteSection = async (req, res, next) => {
   }
 };
 
-const getAllSections = async (req, res, next) => {
+const getAllSections = async (req, res) => {
   try {
     let allSections = await SectionModel.find();
 

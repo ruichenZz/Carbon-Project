@@ -72,10 +72,25 @@ const removeUser = async (req, res) => {
 }
 
 
+const getUserSection = async (req, res) => {
+  let { userId } = req.params;
+  const user = await UserModel.findById(userId);
+  
+  try {
+    let userSection = await Section.find({ sectionName: { user.section } });
+    res.status(200).json({ userSection });
+    
+  } catch (error) {
+    res.status(500).json({ error, message: "Failed to get user's sections."});
+  }
+};
+  
+
 module.exports = {
   handleError,
   getUserDate,
   setUserDate,
   updateUser,
   removeUser,
+  getUserSection,
 };

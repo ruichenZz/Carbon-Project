@@ -15,4 +15,6 @@ router.post('/:year-:month-:day', setUserDate);
 router.patch('/', updateUser);
 router.delete('/:id', removeUser);
 
+router.get('/:userId', getUserSection);
+
 module.exports = router;

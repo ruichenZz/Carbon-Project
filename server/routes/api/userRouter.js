@@ -6,6 +6,7 @@ const {
   setUserDate,
   updateUser,
   removeUser,
+  getUserSection,
 } = require("../../controllers/userController");
 
 const router = new Router();

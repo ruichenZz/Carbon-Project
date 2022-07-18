@@ -1,5 +1,4 @@
-const { Project } = require("../../db");
-const { User } = require("../../db");
+const { User, Section } = require("../db");
 
 
 const handleError = (res) => {
@@ -74,10 +73,10 @@ const removeUser = async (req, res) => {
 
 const getUserSection = async (req, res) => {
   let { userId } = req.params;
-  const user = await UserModel.findById(userId);
+  const user = await User.findById(userId);
   
   try {
-    let userSection = await Section.find({ sectionName: { user.section } });
+    let userSection = await Section.findById(user.section);
     res.status(200).json({ userSection });
     
   } catch (error) {

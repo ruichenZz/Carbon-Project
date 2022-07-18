@@ -4,6 +4,7 @@ const ProjectModel = require("../db/models/Project");
 const SectionModel = require("../db/models/Section");
 
 const { User } = require("../db");
+const { Section } = require("../db");
 
 const isAuthenticated = async (req, res, next) => {
   // req.isAuthenticated() is a method passed from the passport
@@ -105,7 +106,7 @@ const demote = async (req, res, next) => {
     user.admin = false;
     await user.save();
 
-    res.status(200).json({ messgae: "Demoted to a regular user" });
+    res.status(200).json({ message: "Demoted to a regular user" });
   } catch (error) {
     res.status(500).json({ error, message: "Failed to demote" });
   }
@@ -124,6 +125,71 @@ const approve = async (req, res, next) => {
     res.status(200).json({ message: "Project has been approved" });
   } catch (error) {
     res.status(500).json({ error, message: "Fail to approve" });
+  }
+};
+
+const createSection = async (req, res, next) => {
+  try {
+    // re.user.admin will not work in Postman, try to figure it out
+    // if (req.user.admin || req.user.superAdmin) {
+    //   const { sectionName } = req.body;
+    //   const newSection = new Section({ sectionName });
+    //   await newSection.save();
+
+    //   res.status(200).json({ message: "New section created", section: newSection });
+    // } else {
+    //   res.status(401).json({ message: "Unauthorized: you are not an admin" });
+    // }
+    const { sectionName } = req.body;
+    const newSection = new Section({ sectionName });
+    await newSection.save();
+
+    res.status(200).json({ message: "New section created", section: newSection });
+  } catch (error) {
+    res.status(500).json({ error, message: "Failed to create section" });
+  }
+};
+
+const deleteSection = async (req, res, next) => {
+  try {
+    // if (req.user.admin || req.user.superAdmin) {
+    //   SectionModel.findByIdAndDelete(req.params.sectionid, (err) => {
+    //     if (err) {
+    //       console.log(err);
+    //       res.status(400).json("Failed to delete section");
+    //     }
+    //     res.status(200).json("Successfully deleted section");
+    //   });
+    // } else {
+    //   res.status(401).json({ message: "Unauthorized: you are not an admin" });
+    // }
+    SectionModel.findByIdAndDelete(req.params.sectionid, (err) => {
+      if (err) {
+        console.log(err);
+        res.status(400).json("Failed to delete section");
+      }
+      res.status(200).json("Successfully deleted section");
+    });
+  } catch (error) {
+    res.status(500).json({ error, message: "Failed to delete section" });
+  }
+};
+
+const getAllSections = async (req, res, next) => {
+  try {
+    let allSections = await SectionModel.find();
+
+    // if (req.user.admin || req.user.superAdmin) {
+    //   allSections = await SectionModel.find();
+    // } else {
+    //   res.status(401).json({ message: "Unauthorized: you are not an admin" });
+    // }
+
+    res.status(200).json({
+      allSections,
+    });
+  } catch (error) {
+    res.status(500).json({ error, message: "Failed to get all sections" });
   }
 };
 
@@ -196,4 +262,9 @@ module.exports = {
   demote,
   approve,
   deny,
+  createSection,
+  deleteSection,
+  getAllSections,
+  assignSection,
+  removeSection,
 };

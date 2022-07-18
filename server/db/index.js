@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('./models/User');
 const Project = require('./models/Project');
+const Section = require('./models/Section');
 
 mongoose.connect(process.env.MONGO_URL, {
   useNewUrlParser: true,
@@ -20,5 +21,6 @@ mongoose.connection.on('error', err => {
 
 module.exports = {
   User,
+  Section,
   Project,
 };

@@ -77,7 +77,7 @@ const getUserSection = async (req, res) => {
   const user = await UserModel.findById(userId);
   
   try {
-    let userSection = await Section.find({ sectionName: user.section });
+    let userSection = await Section.find({ sectionName: { user.section } });
     res.status(200).json({ userSection });
     
   } catch (error) {

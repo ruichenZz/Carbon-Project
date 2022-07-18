@@ -102,9 +102,6 @@ const App = () => {
         {collapseNavbar ? null : (
           <Route path="/">
             <Grid item xs={2}>
-            <Grid container justifyContent="center">
-              <Create/>
-            </Grid>
               <Tabs
                 value={value}
                 onChange={handleChange}

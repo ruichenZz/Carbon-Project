@@ -65,7 +65,18 @@ const App = () => {
               //   onClick={handleClickOpen}
               variant="h5"
               component="div"
-              sx={{ flexGrow: 2 }}
+              // component={Link}
+              to="/"
+              noWrap
+              sx={{ 
+                mr: 2,
+              display: { xs: 'none', md: 'flex' },
+              fontFamily: 'monospace',
+              fontWeight: 800,
+              color: 'inherit',
+              textDecoration: 'none',
+              
+               }}
             >
               Carbon Project
             </Typography>
@@ -102,6 +113,9 @@ const App = () => {
                   component={Link}
                   to="/"
                 />
+                <Grid container justifyContent="center">
+                   <Create/>
+                </Grid>
                 {isAdmin ? (
                   <Tab
                     icon={<AdminPanelSettingsIcon />}

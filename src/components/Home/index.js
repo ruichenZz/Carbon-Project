@@ -34,9 +34,6 @@ const Home = () => {
             <Typography variant="h5" component="div" sx={{ flexGrow: 2 }}>
               Carbon Project
             </Typography>
-            {/* <Create />
-          <Button color="inherit"></Button>
-          <Button color="inherit">Login</Button> */}
           </Toolbar>
         </AppBar>
       </Box>

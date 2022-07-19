@@ -16,6 +16,9 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import { Avatar } from "@mui/material";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { UserProfile } from "./components/UserProfile";
 
 import Dashboard from "./components/Dashboard";
 import GrapesJsEditor from "./components/GraphJsEditor";
@@ -26,7 +29,7 @@ import config from "./config";
 import Create from "./components/Dashboard/Create";
 
 const App = () => {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(1);
   const [collapseNavbar, setcollapseNavbar] = React.useState(false);
   const [isAdmin, setIsAdmin] = React.useState(0);
 
@@ -65,13 +68,36 @@ const App = () => {
               //   onClick={handleClickOpen}
               variant="h5"
               component="div"
-              sx={{ flexGrow: 2 }}
+              // component={Link}
+              to="/"
+              noWrap
+              sx={{
+                mr: 2,
+                display: { xs: "none", md: "flex" },
+                fontFamily: "monospace",
+                fontWeight: 800,
+                color: "inherit",
+                textDecoration: "none",
+              }}
             >
               Carbon Project
             </Typography>
-            {/* <Create />
-          <Button color="inherit"></Button>
-          <Button color="inherit">Login</Button> */}
+            <IconButton
+              component={Link}
+              to="/user"
+              style={{ margin: "20px", marginLeft: "70%" }}
+            >
+              <AccountCircleIcon
+                style={{
+                  margin: "-13px",
+                  width: "60px",
+                  height: "60px",
+                }}
+              >
+                User
+              </AccountCircleIcon>
+            </IconButton>
+            {/* <Button color="inherit">Login</Button> */}
           </Toolbar>
         </AppBar>
       </Box>
@@ -96,6 +122,9 @@ const App = () => {
                 onChange={handleChange}
                 orientation="vertical"
               >
+                <Grid container justifyContent="center">
+                  <Create />
+                </Grid>
                 <Tab
                   icon={<DashboardIcon />}
                   label="Dashboard"
@@ -120,6 +149,7 @@ const App = () => {
             <Route exact path="/" component={Dashboard} />
             <Route path="/edit/:id" component={GrapesJsEditor} />
             <Route path="/admin" component={AdminPage} />
+            <Route path="/user" component={UserProfile} />
           </Switch>
         </Grid>
       </Grid>

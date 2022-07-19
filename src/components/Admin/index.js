@@ -1,101 +1,83 @@
+import { hot } from "react-hot-loader/root";
 import React from "react";
-import styled from "styled-components";
-import { NavLink } from "react-router-dom";
+import { Switch, Route, Link } from "react-router-dom";
 import axios from "axios";
+
+//import material ui stuffes
+import { Box, Grid, Paper } from "@mui/material";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+
+//import AdminPage from "./components/Admin";
+import GroupWorkIcon from "@mui/icons-material/GroupWork";
+import PeopleIcon from "@mui/icons-material/People";
+import WebIcon from "@mui/icons-material/Web";
+import AdminProjects from "./adminProjects"
+import AdminUsers from "./adminUsers"
+
+
 import config from "../../config";
+import Dashboard from "../Dashboard";
+import AdminSection from "./adminSections";
 
-const getUsers = () =>
-  axios.get(config.SERVER_URL + `/api/admin/users`).then((res) => res.data);
-const promoteRequest = (UID) =>
-  axios
-    .post(config.SERVER_URL + `/api/admin/promote`, UID)
-    .then((res) => res.data);
-const demoteRequest = (UID) =>
-  axios.post(config.SERVER_URL + `/admin/api/demote`, UID).then((res) => res.data);
+const AdminPage = () => {
+  const [value, setValue] = React.useState(0);
+  const [isAdmin, setIsAdmin] = React.useState(0);
 
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
-class AdminPage extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: [],
-      loading: true,
-    };
-    this.transformData = this.transformData.bind(this);
-    this.promote = this.promote.bind(this);
-    this.demote = this.demote.bind(this);
-  }
-
-  componentDidMount() {
-    getUsers().then((res) => {
-      console.log(res);
-      const data = this.transformData(res);
-      this.setState({
-        data,
-        loading: false,
-      });
-    });
-  }
-
-
-  transformData(data) {
-    return data.allUsers.map((x) => ({
-      userId: x._id,
-    }));
-  }
-
-  promote(someone) {
-    console.log("you just got promoted! :P");
-    console.log(someone);
-    promoteRequest({ id: someone }).then((data) => console.log(data));
-    window.location.reload();
-  }
-
-  demote(someone) {
-    console.log("you just got demoted~ :(");
-    console.log(someone);
-    demoteRequest({ id: someone }).then((data) => console.log(data));
-    window.location.reload();
-  }
-
-
-  render() {
-    if (this.state.loading) {
-      return null;
+  axios.get(config.SERVER_URL + `/api/admin/is_admin`).then((res) => {
+    if (res.data.isAdmin) {
+      setIsAdmin(1);
     }
+    console.log("is admin: ", isAdmin);
+  });
 
-    return (
-      <>
-        <h1 style={{ margin: "1em" }}>Admin Page</h1>
-        <Button>
-          {" "}
-          <NavLink style={{ textDecoration: "none", color: "black" }} to="/">
-            {" "}
-            Home{" "}
-          </NavLink>{" "}
-        </Button>
-        <h2 style={{ margin: "1.2em" }}>Staff List</h2>
-        <div style={{ margin: "1.7em" }}>
-          {/* {CreateTable(
-            this.state.data,
-            ["email"],
-            this.promote,
-            undefined,
-            this.demote
-          )} */
-          /*TODO: use createTable from ant design */}
-        </div>
-      </>
-    );
-  }
-}
+  return (
+    <div className="AdminPage">
+      <Grid container
+        direction="row"
+        justify="center"
+        alignItems="stretch">
+        <Grid Item xs={12}>
+          <Route path="/">
+            {isAdmin ? (
+              <Tabs value={value} onChange={handleChange} centered>
+                  <Tab
+                    icon={<WebIcon />}
+                    label="Manage Projects"
+                    component={Link}
+                    to="/admin/adminProjects"
+                  />
+                  <Tab
+                    icon={<PeopleIcon />}
+                    label="Manage Users"
+                    component={Link}
+                    to="/admin/adminUsers"
+                  />
+                  <Tab
+                    icon={<GroupWorkIcon />}
+                    label="Manage Sections"
+                    component={Link}
+                    to="/admin/adminSections"
+                  />      
+              </Tabs>) : null}
+          </Route>
+        </Grid>
+        <Grid item xs={12}>
+          <Switch>
+            {/* <Route exact path="/" component={AdminPage} /> */}
+            <Route path="/admin/adminProjects" component={Dashboard} /> 
+            <Route path="/admin/adminUsers" component={Dashboard} />
+            <Route path="/admin/adminSections" component={AdminSection} />
+            {/* should change to corresponding component after implementation*/}
+          </Switch>
+        </Grid>
+      </Grid>
+    </div>
+  );
+};
 
-const Button = styled.button`
-  background-color: white;
-  color: black;
-  padding: 1em;
-  cursor: pointer;
-  margin-left: 2em;
-`;
-
-export default AdminPage;
+export default hot(AdminPage);

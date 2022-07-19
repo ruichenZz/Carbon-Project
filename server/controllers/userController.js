@@ -1,33 +1,40 @@
-const { Project } = require("../../db");
-const { User } = require("../../db");
-
+const { Project } = require("../db");
+const { User } = require("../db");
+const { UserModel } = require("../db/models/User");
 
 const handleError = (res) => {
-  res.json({ "message": "bad" });
-}
-
+  res.json({ message: "bad" });
+};
 
 const getUserDate = async (req, res) => {
   let date;
   const { year, month, day } = req.params;
   try {
     date = new Date(`${year}-${month}-${day}`);
-  }
-  catch (e) {
+  } catch (e) {
     handleError(res);
   }
   let notes = await DesignNote.find({ date: date });
   res.json(notes);
-}
-
+};
 
 const setUserDate = async (req, res) => {
-  const { section, placement, slug, wordCount, art, status, comments } = req.body;
+  const { section, placement, slug, wordCount, art, status, comments } =
+    req.body;
   const { year, month, day } = req.params;
 
   const date = new Date(`${year}-${month}-${day}`);
 
-  const query = { placement, slug, section, wordCount, art, comments, status, date };
+  const query = {
+    placement,
+    slug,
+    section,
+    wordCount,
+    art,
+    comments,
+    status,
+    date,
+  };
   if (section == "inserts") {
     let expiration = new Date();
     expiration.setDate(expiration.getDate() + 14);
@@ -40,12 +47,21 @@ const setUserDate = async (req, res) => {
     }
 
     res.json(note);
-  })
-}
-
+  });
+};
 
 const updateUser = async (req, res) => {
-  const { id, placement, slug, section, wordCount, art, comments, status, date } = req.body;
+  const {
+    id,
+    placement,
+    slug,
+    section,
+    wordCount,
+    art,
+    comments,
+    status,
+    date,
+  } = req.body;
   // TODO this is so bad
   const query = {};
   placement && (query.placement = placement);
@@ -57,8 +73,7 @@ const updateUser = async (req, res) => {
 
   let entry = await DesignNote.findByIdAndUpdate(id, query);
   res.json(entry);
-}
-
+};
 
 const removeUser = async (req, res) => {
   let { id } = req.params;
@@ -69,8 +84,17 @@ const removeUser = async (req, res) => {
   } else {
     res.json([]);
   }
-}
+};
 
+const getCurrentUser = async (req, res) => {
+  let userId = req.user["_id"];
+  try {
+    const user = await User.findById(userId);
+    res.status(200).json({ user });
+  } catch (error) {
+    res.status(500).json({ error, message: "Failed to get current user" });
+  }
+};
 
 module.exports = {
   handleError,
@@ -78,4 +102,5 @@ module.exports = {
   setUserDate,
   updateUser,
   removeUser,
+  getCurrentUser,
 };

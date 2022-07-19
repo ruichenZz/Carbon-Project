@@ -29,7 +29,7 @@ import config from "./config";
 import Create from "./components/Dashboard/Create";
 
 const App = () => {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(1);
   const [collapseNavbar, setcollapseNavbar] = React.useState(false);
   const [isAdmin, setIsAdmin] = React.useState(0);
 
@@ -71,19 +71,22 @@ const App = () => {
               // component={Link}
               to="/"
               noWrap
-              sx={{ 
+              sx={{
                 mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 800,
-              color: 'inherit',
-              textDecoration: 'none',
-              
-               }}
+                display: { xs: "none", md: "flex" },
+                fontFamily: "monospace",
+                fontWeight: 800,
+                color: "inherit",
+                textDecoration: "none",
+              }}
             >
               Carbon Project
             </Typography>
-            <IconButton component={Link} to="/user" style={{ margin: "20px" }}>
+            <IconButton
+              component={Link}
+              to="/user"
+              style={{ margin: "20px", marginLeft: "70%" }}
+            >
               <AccountCircleIcon
                 style={{
                   margin: "-13px",
@@ -94,7 +97,7 @@ const App = () => {
                 User
               </AccountCircleIcon>
             </IconButton>
-            <Button color="inherit">Login</Button>
+            {/* <Button color="inherit">Login</Button> */}
           </Toolbar>
         </AppBar>
       </Box>
@@ -119,15 +122,15 @@ const App = () => {
                 onChange={handleChange}
                 orientation="vertical"
               >
+                <Grid container justifyContent="center">
+                  <Create />
+                </Grid>
                 <Tab
                   icon={<DashboardIcon />}
                   label="Dashboard"
                   component={Link}
                   to="/"
                 />
-                <Grid container justifyContent="center">
-                   <Create/>
-                </Grid>
                 {isAdmin ? (
                   <Tab
                     icon={<AdminPanelSettingsIcon />}

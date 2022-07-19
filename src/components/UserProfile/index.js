@@ -35,7 +35,7 @@ export function UserProfile() {
           <TableCell>{username}</TableCell>
         </TableRow>
         <TableRow>
-          <MyTableCell variant="head">Group:</MyTableCell>
+          <MyTableCell variant="head">Section:</MyTableCell>
           <TableCell>{group}</TableCell>
         </TableRow>
       </TableBody>

@@ -3,6 +3,7 @@ const Router = require("express-promise-router");
 const { 
   checkAdmin, 
   getAllUsers,
+  getAllProjects,
   isAdmin,
   isSuperAdmin,
   promote, 
@@ -20,6 +21,7 @@ const router = new Router();
 
 router.get("/is_admin", isAdmin, checkAdmin);
 router.get("/users", isAdmin, getAllUsers);
+router.get("/projects", isAdmin, getAllProjects);
 
 router.post("/promote", isAdmin, promote);
 router.post("/demote", isSuperAdmin, demote);

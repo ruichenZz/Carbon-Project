@@ -1,5 +1,4 @@
-const { Project } = require("../db");
-const { User } = require("../db");
+const { Project, User, Section } = require("../db");
 const { UserModel } = require("../db/models/User");
 
 const handleError = (res) => {
@@ -96,11 +95,26 @@ const getCurrentUser = async (req, res) => {
   }
 };
 
+const getUserSection = async (req, res) => {
+  let { userId } = req.params;
+  const user = await User.findById(userId);
+  
+  try {
+    let userSection = await Section.findById(user.section);
+    res.status(200).json({ userSection });
+    
+  } catch (error) {
+    res.status(500).json({ error, message: "Failed to get user's sections."});
+  }
+};
+  
+
 module.exports = {
   handleError,
   getUserDate,
   setUserDate,
   updateUser,
   removeUser,
+  getUserSection,
   getCurrentUser,
 };

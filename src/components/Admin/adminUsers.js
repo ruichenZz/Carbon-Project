@@ -11,4 +11,6 @@ const promoteRequest = (UID) =>
     .post(config.SERVER_URL + `/api/admin/promote`, UID)
     .then((res) => res.data);
 const demoteRequest = (UID) =>
-  axios.post(config.SERVER_URL + `/admin/api/demote`, UID).then((res) => res.data);
+  axios
+    .post(config.SERVER_URL + `/admin/api/demote`, UID)
+    .then((res) => res.data);

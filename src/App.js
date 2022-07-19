@@ -16,6 +16,9 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import { Avatar } from "@mui/material";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { UserProfile } from "./components/UserProfile";
 
 import Dashboard from "./components/Dashboard";
 import GrapesJsEditor from "./components/GraphJsEditor";
@@ -69,9 +72,18 @@ const App = () => {
             >
               Carbon Project
             </Typography>
-            {/* <Create />
-          <Button color="inherit"></Button>
-          <Button color="inherit">Login</Button> */}
+            <IconButton component={Link} to="/user" style={{ margin: "20px" }}>
+              <AccountCircleIcon
+                style={{
+                  margin: "-13px",
+                  width: "60px",
+                  height: "60px",
+                }}
+              >
+                User
+              </AccountCircleIcon>
+            </IconButton>
+            <Button color="inherit">Login</Button>
           </Toolbar>
         </AppBar>
       </Box>
@@ -120,6 +132,7 @@ const App = () => {
             <Route exact path="/" component={Dashboard} />
             <Route path="/edit/:id" component={GrapesJsEditor} />
             <Route path="/admin" component={AdminPage} />
+            <Route path="/user" component={UserProfile} />
           </Switch>
         </Grid>
       </Grid>

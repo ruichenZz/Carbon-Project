@@ -2,7 +2,7 @@ const Router = require("express-promise-router");
 const ProjectRouter = require("./projectRouter");
 const AdminRouter = require("./adminRouter");
 const GrapesStorageRouter = require("./grapesStorageRouter");
-const UserRouter = require("./userRouter")
+const UserRouter = require("./userRouter");
 
 const router = new Router();
 

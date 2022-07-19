@@ -20,7 +20,10 @@ const Create = (props) => {
     function getProject() {
       axios
         .get(config.SERVER_URL + '/api/projects/')
-        .then((res) => setProjects(res.data))
+        .then((res) => {
+          setProjects(res.data)
+         // window.location.reload();
+        })
         .catch((err) => console.log(err));
     }
     getProject();
@@ -71,6 +74,7 @@ const Create = (props) => {
               })
               .then((res) => {
                 alert(`Project ${values.projectName} successfully created!`);
+                window.location.reload();
                 setProjects((prevState) => [...prevState, res.data.project]);
                 setCreateProjectModalOpen(false);
                 setSubmitting(false);
@@ -100,14 +104,5 @@ const Create = (props) => {
     </div>
   );
 };
-
-// styled components declaration
-
-const Button = styled.button`
-  background-color: white;
-  color: black;
-  padding: 2em;
-  cursor: pointer;
-`;
 
 export default Create;

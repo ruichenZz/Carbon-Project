@@ -13,7 +13,7 @@ const assignSection = async (req, res, next) => {
       const section = await SectionModel.findById(sectionId);
   
       user.sections.push(section._id);
-      section.owner = user._id;
+      section.members.push(user._id);
   
       await user.save();
       await section.save();
@@ -37,7 +37,12 @@ const removeSection = async (req, res, next) => {
       );
       user.sections = updatedSections;
   
-      section.owner = null;
+      let updatedMember = section.members.filter(
+        (currMember) => {
+          return String(currMember) !== userId;
+        }
+      );
+      section.members = updatedMember;
   
       await user.save();
       await section.save();
@@ -59,8 +64,10 @@ const createSection = async (req, res) => {
       // } else {
       //   res.status(401).json({ message: "Unauthorized: you are not an admin" });
       // }
+      const userId = req.user["_id"];
       const { sectionName } = req.body;
-      const newSection = new Section({ sectionName });
+      const newSection = new Section({ sectionName, director: userId });
+
       await newSection.save();
   
       res.status(200).json({ message: "New section created", section: newSection });

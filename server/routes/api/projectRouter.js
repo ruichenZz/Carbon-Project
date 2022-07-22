@@ -11,9 +11,9 @@ const {
 const router = new Router();
 
 router.get("/", getAllProject);
-router.get("/:projectid", getProjectById);
+router.get("/:projectId", getProjectById);
 router.post("/create", createProject);
-router.put("/:projectid", updateProject);
+router.post("/:projectId", updateProject);
 router.delete("/:projectid", deleteProject);
 
 module.exports = router;

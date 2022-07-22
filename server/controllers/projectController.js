@@ -18,7 +18,6 @@ const getAllProject = async (req, res, next) => {
 }
 
 const getProjectById = async (req, res, next) => {
-    // res.status(500).json({ message: "Not Implemented yet" });
     try {
       const { projectId } = req.params;
       const projectToFetch = await Project.findById(projectId);

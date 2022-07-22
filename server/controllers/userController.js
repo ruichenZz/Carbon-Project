@@ -96,7 +96,7 @@ const getCurrentUser = async (req, res) => {
 };
 
 const getUserSection = async (req, res) => {
-  let { userId } = req.params;
+  let userId = req.params.userId;
   const user = await User.findById(userId);
   
   try {

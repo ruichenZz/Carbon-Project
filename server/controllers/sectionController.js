@@ -4,7 +4,7 @@ const SectionModel = require("../db/models/Section");
 const { User } = require("../db");
 const { Section } = require("../db");
 
-
+ 
 // to be tested and wait for implementation of section shcema
 const assignSection = async (req, res, next) => {
     try {
@@ -49,16 +49,6 @@ const removeSection = async (req, res, next) => {
 
 const createSection = async (req, res) => {
     try {
-      // re.user.admin will not work in Postman, try to figure it out
-      // if (req.user.admin || req.user.superAdmin) {
-      //   const { sectionName } = req.body;
-      //   const newSection = new Section({ sectionName });
-      //   await newSection.save();
-  
-      //   res.status(200).json({ message: "New section created", section: newSection });
-      // } else {
-      //   res.status(401).json({ message: "Unauthorized: you are not an admin" });
-      // }
       const { sectionName } = req.body;
       const newSection = new Section({ sectionName });
       await newSection.save();
@@ -71,17 +61,6 @@ const createSection = async (req, res) => {
   
 const deleteSection = async (req, res) => {
     try {
-      // if (req.user.admin || req.user.superAdmin) {
-      //   SectionModel.findByIdAndDelete(req.params.sectionid, (err) => {
-      //     if (err) {
-      //       console.log(err);
-      //       res.status(400).json("Failed to delete section");
-      //     }
-      //     res.status(200).json("Successfully deleted section");
-      //   });
-      // } else {
-      //   res.status(401).json({ message: "Unauthorized: you are not an admin" });
-      // }
       SectionModel.findByIdAndDelete(req.params.sectionid, (err) => {
         if (err) {
           console.log(err);
@@ -97,13 +76,6 @@ const deleteSection = async (req, res) => {
 const getAllSections = async (req, res) => {
     try {
       let allSections = await SectionModel.find();
-  
-      // if (req.user.admin || req.user.superAdmin) {
-      //   allSections = await SectionModel.find();
-      // } else {
-      //   res.status(401).json({ message: "Unauthorized: you are not an admin" });
-      // }
-  
       res.status(200).json({
         allSections,
       });

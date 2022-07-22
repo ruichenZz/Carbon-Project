@@ -31,7 +31,7 @@ const Editor = () => {
         urlStore: config.SERVER_URL + `/api/grapesStorage/storage/${id}`,
 
         // comment out for now because we don't have anything to load yet
-        // urlLoad: config.SERVER_URL + "/api/grapesStorage/storage",
+        urlLoad: config.SERVER_URL + `/api/grapesStorage/storage/${id}`,
       },
     });
     setEditor(gEditor);

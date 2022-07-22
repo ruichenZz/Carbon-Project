@@ -19,7 +19,7 @@ const {
 
 const router = new Router();
 
-router.get("/is_admin", isAdmin, checkAdmin);
+router.get("/is_admin", checkAdmin);
 router.get("/users", isAdmin, getAllUsers);
 router.get("/projects", isAdmin, getAllProjects);
 

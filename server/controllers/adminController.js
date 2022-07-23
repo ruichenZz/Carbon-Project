@@ -55,6 +55,19 @@ const getAllUsers = async (req, res, next) => {
   }
 }
 
+const getAllProjects = async (req, res, next) => {
+  // Cedric: I implement this way but I have not tested them yet. You can eleaborate them and test them.
+  try {
+    let allProjects = await ProjectModel.find();
+
+    res.status(200).json({
+      allProjects,
+    });
+  } catch (error) {
+    res.status(500).json({ error, message: "Failed to get all projects" });
+  }
+}
+
 const isAdmin = async (req, res, next) => {
   try {
     if (req.user.admin || req.user.superAdmin) {
@@ -256,6 +269,7 @@ module.exports = {
   isAuthenticated,
   checkAdmin,
   getAllUsers,
+  getAllProjects,
   isAdmin,
   isSuperAdmin,
   promote,

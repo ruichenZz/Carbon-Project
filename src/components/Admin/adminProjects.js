@@ -21,46 +21,27 @@ import Button from '@mui/material/Button';
 
 const AdminProjects = (props) => {
   const [projects, setProjects] = useState([]);
-  const [users, setUsers] = useState([]);
-
 
   useEffect(() => {
     function getProject() {
       axios
-        .get(config.SERVER_URL + '/api/projects/')
-        .then((res) => setProjects(res.data))
+        .get(config.SERVER_URL + '/api/admin/projects/')
+        .then((res) => setProjects((res.data).allProjects))
         .catch((err) => console.log(err));
     }
-    function getUsers() {
-        axios
-          .get(config.SERVER_URL + '/api/admin/users/')
-          .then((res) => setUsers(res.data))
-          .catch((err) => console.log(err));
-      }
     getProject();
-    getUsers();
   }, []);
 
   const handleUpdateProject = () => {
+    console.log(projects)
     setProjects(projects.map());
   };
 
 
   return (
     <div>
-      <Header>
-        {projects.length !== 0 && (
-          <>
-           
-          </>
-        )}
-      </Header>
 
-      {projects.length === 0 ? (
-        <NoProjectContainer>
-          {/* <h1>You haven't created any projects</h1> */}
-        </NoProjectContainer>
-      ) : (
+      {(
         <Container>
           <TableContainer component={Paper}>
             <Table>
@@ -196,20 +177,20 @@ function Project(props) {
           </TableCell>
           <TableCell>
             {data.isApproved ? 
-                <Button size="small" color="error" variant="outlined" disabled>
+                <Button size="small" color="success" variant="outlined" disabled>
                     Approve
                 </Button> : 
-                <Button size="small" color="error" variant="outlined" onClick={() => handleApproveProjects(data['_id'])}>
+                <Button size="small" color="success" variant="outlined" onClick={() => handleApproveProjects(data['_id'])}>
                     Approve
                 </Button> 
               }
           </TableCell>
           <TableCell>
-            {data.isApproved ? 
-                <Button size="small" color="error" variant="outlined" onClick={() => handleDenyProjects(data['_id'])}>
+            {data.status == "denied" ? 
+                <Button size="small" color="error" variant="outlined" disabled>
                     Deny
                 </Button> : 
-                <Button size="small" color="error" variant="outlined" disabled>
+                <Button size="small" color="error" variant="outlined" onClick={() => handleDenyProjects(data['_id'])}>
                     Deny
                 </Button> 
               }

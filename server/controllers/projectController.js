@@ -18,14 +18,15 @@ const getAllProject = async (req, res, next) => {
 }
 
 const getProjectById = async (req, res, next) => {
-    let projectId = req.params.projectid;
-    Project.findById(projectId, (err, project) => {
-      if (err) {
-        console.log(err);
-        res.status(400).send("Error retrieving project data");
-      }
-      res.status(200).send(project);
-    });
+    try {
+      const { projectId } = req.params;
+      const projectToFetch = await Project.findById(projectId);
+
+      const projectData = projectToFetch.content;
+      res.status(200).json( projectData );
+    } catch (error) {
+      res.status(500).json({error, message: "Failed to get Grape.js project"});
+    }
 }
 
 const createProject = async (req, res, next) => {
@@ -52,20 +53,19 @@ const createProject = async (req, res, next) => {
 }
 
 const updateProject = async (req, res, next) => {
-    let projectId = req.params.projectid;
-    let updatedContents = req.body;
-    Project.findByIdAndUpdate(
-      projectId,
-      { content: updatedContents },
-      (err, project) => {
-        if (err) {
-          console.log(err);
-          res.status(400).send("Error adding components!");
-        } else {
-          res.status(200).send(`Successfully Added components!`);
-        }
-      }
-    );
+  try {
+    const { projectId } = req.params;
+    const projectDetail = req.body;
+
+    const projectToSave = await Project.findById(projectId);
+
+    projectToSave.content = projectDetail;
+    await projectToSave.save();
+
+    res.status(200).json({ projectToSave });
+  } catch (error) {
+    res.status(500).json({ error });
+  }
 }
 
 const deleteProject = async (req, res, next) => {
